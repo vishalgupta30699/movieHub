@@ -2,13 +2,14 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { fetchDataFromApi } from "./utils/api";
 import { useSelector, useDispatch } from "react-redux";
-import { getApiConfiguration } from "./store/homeSlice";
+import { getApiConfiguration, getGeneres } from "./store/homeSlice";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Details from "./pages/details/Details";
 import PageNotFound from "./pages/404/PageNotFound";
 import SearchResult from "./pages/searchResult/SearchResult";
 import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function App() {
 
   useEffect(() => {
     fetchConfig();
+    genresCall();
   }, []);
 
   const fetchConfig = () => {
@@ -34,6 +36,23 @@ function App() {
       });
   };
 
+  const genresCall = async () => {
+    let promises = [];
+    let endPoints = ["tv", "movie"];
+    let allGenres = {};
+    endPoints.forEach((url) => {
+      promises.push(fetchDataFromApi(`/genre/${url}/list`));
+    });
+
+    const data = await Promise.all(promises);
+    console.log(data);
+    data.map(({ genres }) => {
+      return genres.map((item) => (allGenres[item.id] = item));
+    });
+    console.log(allGenres);
+    dispatch(getGeneres(allGenres));
+  };
+
   return (
     <Router>
       <Header />
@@ -43,6 +62,7 @@ function App() {
         <Route path="/search/:query" element={<SearchResult />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

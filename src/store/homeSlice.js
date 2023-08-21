@@ -13,7 +13,7 @@ export const homeSlice = createSlice({
       state.url = action.payload;
     },
     getGeneres: (state, action) => {
-      state.genres = action.genres;
+      state.genres = action.payload;
     },
   },
 });
