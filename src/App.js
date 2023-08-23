@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { fetchDataFromApi } from "./utils/api";
 import { useSelector, useDispatch } from "react-redux";
 import { getApiConfiguration, getGeneres } from "./store/homeSlice";
@@ -10,6 +10,8 @@ import PageNotFound from "./pages/404/PageNotFound";
 import SearchResult from "./pages/searchResult/SearchResult";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import ExplorePage from "./pages/explore/ExplorePage";
+import ScrollToTop from "react-scroll-to-top";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +25,6 @@ function App() {
   const fetchConfig = () => {
     fetchDataFromApi("/configuration")
       .then((res) => {
-        console.log(res);
         const url = {
           backdrop: res.images.secure_base_url + "original",
           poster: res.images.secure_base_url + "original",
@@ -45,12 +46,18 @@ function App() {
     });
 
     const data = await Promise.all(promises);
-    console.log(data);
     data.map(({ genres }) => {
       return genres.map((item) => (allGenres[item.id] = item));
     });
-    console.log(allGenres);
     dispatch(getGeneres(allGenres));
+  };
+
+  const override = {
+    "background-color": "black",
+    "border-radius": "50%",
+    width: "60px",
+    height: "60px",
+    color: "white",
   };
 
   return (
@@ -60,8 +67,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/:mediaType/:id" element={<Details />} />
         <Route path="/search/:query" element={<SearchResult />} />
+        <Route path="/explore/:mediaType" element={<ExplorePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <ScrollToTop smooth color="white" style={override} />
       <Footer />
     </Router>
   );

@@ -3,6 +3,7 @@ import "./Cast.scss";
 import { useSelector } from "react-redux";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import Img from "../../../components/lazyLoadImage/Img";
+import NoAvatarImg from "../../../assets/NoAvatarImage.png";
 
 const Cast = ({ data, loading }) => {
   const { url } = useSelector((state) => state.home);
@@ -25,7 +26,7 @@ const Cast = ({ data, loading }) => {
             {data?.map((item) => {
               let imgUrl = item.profile_path
                 ? url.profile + item.profile_path
-                : "";
+                : NoAvatarImg;
               return (
                 <div className="listItem" key={item.id}>
                   <div className="profileImg">

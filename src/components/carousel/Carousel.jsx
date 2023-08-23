@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import Img from "../lazyLoadImage/Img";
-
-import "./Carousel.scss";
+import NoImageFound from "../../assets/NoImageFound.png";
 import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
+
+import "./Carousel.scss";
 
 const Carousel = ({ data, loading, endPoint, title }) => {
   const carouselContainer = useRef();
@@ -61,7 +62,7 @@ const Carousel = ({ data, loading, endPoint, title }) => {
             {data?.map((item) => {
               const posterUrl = item.poster_path
                 ? url.poster + item.poster_path
-                : "";
+                : NoImageFound;
               return (
                 <div
                   key={item.id}
@@ -72,11 +73,11 @@ const Carousel = ({ data, loading, endPoint, title }) => {
                 >
                   <div className="posterBlock">
                     <Img src={posterUrl} />
-                    <CircleRating rating={item.vote_average.toFixed(1)} />
+                    <CircleRating rating={item.vote_average?.toFixed(1)} />
                     <Genres data={item.genre_ids.slice(0, 2)} />
                   </div>
                   <div className="textBlock">
-                    <span className="title">{item.title || item.name}</span>
+                    <span className="title">{item?.title || item?.name}</span>
                     <span className="date">
                       {dayjs(item.release_date).format("MMM D, YYYY")}
                     </span>

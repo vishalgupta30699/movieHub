@@ -17,7 +17,6 @@ const HeroBanner = () => {
   const { data, loading } = useFetch("/movie/upcoming");
 
   const searchQueryHandler = (event) => {
-    console.log(event.key);
     if (event.key === "Enter" && query.length > 0) {
       navigate(`/search/${query}`);
     }
@@ -53,7 +52,11 @@ const HeroBanner = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyUp={searchQueryHandler}
               />
-              <button>Search</button>
+              <button
+                onClick={() => query.length > 0 ? navigate(`/search/${query}`): ""}
+              >
+                Search
+              </button>
             </div>
           </div>
         </div>

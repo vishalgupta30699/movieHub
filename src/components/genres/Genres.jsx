@@ -4,7 +4,6 @@ import "./Genres.scss";
 
 const Genres = ({ data }) => {
   const { genres } = useSelector((state) => state.home);
-  console.log(genres,data)
 
   return (
     <div className="genres">

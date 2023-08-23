@@ -21,48 +21,52 @@ const VideoSection = ({ loading, data }) => {
   };
 
   return (
-    <div className="videoSection">
-      <ContentWrapper>
-        <div className="sectionHeading">Official Videos</div>
-        {!loading ? (
-          <div className="videos">
-            {data?.results?.map((video) => {
-              return (
-                <div
-                  className="videoItem"
-                  key={video.key}
-                  onClick={() => {
-                    setVideoId(video.key);
-                    setShow(true);
-                  }}
-                >
-                  <div className="videoThumbnail">
-                    <Img
-                      src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
-                    />
-                    <AiOutlinePlayCircle />
-                  </div>
-                  <div className="videoTitle">{video.name}</div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="videoSkeleton">
-            {loadingSkeleton()}
-            {loadingSkeleton()}
-            {loadingSkeleton()}
-            {loadingSkeleton()}
-          </div>
-        )}
-      </ContentWrapper>
-      <VideoPopup
-        show={show}
-        setShow={setShow}
-        videoId={videoId}
-        setVideoId={setVideoId}
-      />
-    </div>
+    <>
+      {data?.results?.length > 0 && (
+        <div className="videoSection">
+          <ContentWrapper>
+            <div className="sectionHeading">Official Videos</div>
+            {!loading ? (
+              <div className="videos">
+                {data?.results?.map((video) => {
+                  return (
+                    <div
+                      className="videoItem"
+                      key={video.key}
+                      onClick={() => {
+                        setVideoId(video.key);
+                        setShow(true);
+                      }}
+                    >
+                      <div className="videoThumbnail">
+                        <Img
+                          src={`https://img.youtube.com/vi/${video.key}/mqdefault.jpg`}
+                        />
+                        <AiOutlinePlayCircle />
+                      </div>
+                      <div className="videoTitle">{video.name}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="videoSkeleton">
+                {loadingSkeleton()}
+                {loadingSkeleton()}
+                {loadingSkeleton()}
+                {loadingSkeleton()}
+              </div>
+            )}
+          </ContentWrapper>
+          <VideoPopup
+            show={show}
+            setShow={setShow}
+            videoId={videoId}
+            setVideoId={setVideoId}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
